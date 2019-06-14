@@ -26,34 +26,37 @@ def clear():
         button.pack_forget()
     del btnlist[:]
 def create_dct():
-    clear()
-    global crnt
-    crnt+=1
-    pasted = pyperclip.paste()
     n = simpledialog.askstring('Input', 'Name your buffer')
-    f = open(filepath+n+'.txt', 'w')
-    f.write(pasted)
-    dct.update({n : crnt})
-    for k,v in dct.items():
-        b = tk.Button(root, text=k, command=lambda e=k:callback(e))
+    if n is not None:
+        global crnt
+        crnt+=1
+        pasted = pyperclip.paste()
+        clear()
+        f = open(filepath+n+'.txt', 'w')
+        f.write(pasted)
+        dct.update({n : crnt})
+        f.close()
+        simplepack('text')
+    else: pass
+def simplepack(typeof):
+    for k in dct.keys():
+        b = tk.Button(root, text=k, command=lambda e=k:writeimage(e)) if typeof == 'image' else tk.Button(root, text=k, command=lambda e=k:callback(e))
         b.pack()
         btnlist.append(b)
-    f.close()
 def create_image():
     try:
-        global crntimage
-        crntimage+=1
         n = simpledialog.askstring('Input', 'Name your buffer')
-        im = ImageGrab.grabclipboard()
-        im.save(filepath+n+'.png','PNG')
-        dct.update({n: crntimage})
-        clear()
-        for k,v in dct.items():
-            b = tk.Button(root, text=k, command=lambda e=k:writeimage(e))
-            b.pack()
-            btnlist.append(b)
-    except:
-        pass
+        if n is not None:
+            global crntimage
+            crntimage+=1
+            im = ImageGrab.grabclipboard()
+            im.save(filepath+n+'.png','PNG')
+            clear()
+            dct.update({n: crntimage})
+            clear()
+            simplepack('image')
+        else: pass
+    except: pass
 def clearfiles():
     global dct
     shutil.rmtree('buffers')
