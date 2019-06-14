@@ -1,9 +1,11 @@
 import pyperclip
+import shutil
 import tkinter as tk
 from PIL import ImageGrab
 from tkinter import simpledialog
-#import imagebuff
+import os
 root = tk.Tk()
+root.title('Multi-Buffer')
 dct = {}
 btnlist = []
 filepath = 'buffers/'
@@ -18,8 +20,6 @@ def callback(e):
     pyperclip.copy(''.join(tocopy))
     f.close()
 def writeimage(e):
-#    IN DEVELOPING
-#    imagebuff.sendtoclip(filepath+dct[e]+'.png')
     pass
 def clear():
     for button in btnlist:
@@ -54,6 +54,13 @@ def create_image():
             btnlist.append(b)
     except:
         pass
+def clearfiles():
+    global dct
+    shutil.rmtree('buffers')
+    os.makedirs('buffers')
+    dct = {}
+    clear()
 tk.Button(text='New', command = create_dct).place(x=0,y=0)
 tk.Button(text='Img', command = create_image).place(x=0,y=26)
+tk.Button(text='Clear', command = clearfiles).place(x=0,y=52)
 root.mainloop()
