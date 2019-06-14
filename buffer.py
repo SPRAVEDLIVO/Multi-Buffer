@@ -2,7 +2,7 @@ import pyperclip
 import tkinter as tk
 from PIL import ImageGrab
 from tkinter import simpledialog
-import imagebuff
+#import imagebuff
 root = tk.Tk()
 dct = {}
 btnlist = []
@@ -13,7 +13,6 @@ root.geometry('100x100')
 def callback(e):
     tocopy = []
     f = open(filepath+str(e)+'.txt', 'r')
-    print(filepath+str(e)+'.txt')
     for line in f:
         tocopy.append(line)
     pyperclip.copy(''.join(tocopy))
@@ -25,6 +24,7 @@ def writeimage(e):
 def clear():
     for button in btnlist:
         button.pack_forget()
+    del btnlist[:]
 def create_dct():
     clear()
     global crnt
